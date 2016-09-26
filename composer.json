@@ -1,0 +1,34 @@
+{
+    "name": "czukowski/markdown-toc",
+    "type": "library",
+    "description": "Table of Contents generator for cebe/markdown",
+    "keywords": ["markdown", "toc", "table of contents", "index"],
+    "homepage": "https://github.com/czukowski/markdown-toc",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Korney Czukowski",
+            "homepage": "http://xn----0tbl7bn.com"
+        }
+    ],  
+    "support": {
+        "issues": "https://github.com/czukowski/markdown-toc/issues"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "cebe/markdown": "~1.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cz\\Markdown\\": "classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cz\\Markdown\\": "tests"
+        }
+    }
+}
