@@ -1,0 +1,4 @@
+ - [H1](example.html)
+   - [H2](example.html#h2)
+ - [Alt-H1](example.html#alt-h1)
+   - [Alt-H2](example.html#alt-h2)
