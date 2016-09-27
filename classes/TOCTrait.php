@@ -68,6 +68,29 @@ trait TOCTrait
     }
 
     /**
+     * @param   string    $markdown
+     * @param   callable  $filter
+     * @return  array
+     */
+    public function findLinks($markdown, $filter = NULL) {
+        if ( ! $filter) {
+            $filter = function() { return TRUE; };
+        }
+        elseif ( ! is_callable($filter)) {
+            throw new InvalidArgumentException('Expected 2nd argument to be a callable function');
+        }
+        $this->prepareMarkers($markdown);
+        $content = $this->parseInline($markdown);
+        $links = [];
+        foreach ($content as $item) {
+            if ($this->isItemOfType($item, 'link') && $filter($item['url'])) {
+                $links[] = $item;
+            }
+        }
+        return $links;
+    }
+
+    /**
      * @param   string   $markdown   markdown source.
      * @param   string   $url        source URL.
      * @param   string   $listType   supported values: `ul` and `ol`.
@@ -111,6 +134,25 @@ trait TOCTrait
      */
     protected function isItemOfType( & $item, $type) {
         return isset($item[0]) && $item[0] === $type;
+    }
+
+    /**
+     * @param   string    $markdown
+     * @param   string    $baseUrl
+     * @param   callable  $linkFilter
+     * @return  array
+     */
+    public function parseIndex($markdown, $baseUrl = '', $linkFilter = NULL) {
+        $headlines = $this->findHeadlines($markdown);
+        $firstHeadline = isset($headlines[0]['content']) ? $this->renderAbsy($headlines[0]['content']) : NULL;
+        $links = [];
+        foreach ($this->findLinks($markdown, $linkFilter) as $link) {
+            $links[] = [
+                'url' => $baseUrl.$link['url'],
+                'text' => $this->renderAbsy($link['text']),
+            ];
+        }
+        return ['title' => $firstHeadline, 'links' => $links];
     }
 
     /**
@@ -244,12 +286,25 @@ trait TOCTrait
     }
 
     /**
-     * @param  array  $lines
+     * @param   array  $lines
+     * @return  array
      */
     abstract protected function parseBlocks($lines);
 
     /**
-     * @param  array  $blocks
+     * @param   string  $text
+     * @return  array
+     */
+    abstract protected function parseInline($text);
+
+    /**
+     * @param  array  $markdown
+     */
+    abstract protected function prepareMarkers($markdown);
+
+    /**
+     * @param   array  $blocks
+     * @return  string
      */
     abstract protected function renderAbsy($blocks);
 }
