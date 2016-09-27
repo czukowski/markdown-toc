@@ -16,7 +16,7 @@ Alternatively you may add the following to the `require` section of your project
 manually and then run `composer update` from the command line:
 
 ```json
-"czukowski/markdown-toc: "~1.0"
+"czukowski/markdown-toc": "~1.0"
 ```
 
 Usage
